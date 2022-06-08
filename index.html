@@ -8,21 +8,24 @@
   <title>Vite App</title>
 </head>
 
-<body>
+<body class="bg-zinc-900 text-white">
 
-  <h1 class="text-2xl">Task</h1>
+  <div class="flex justify-center items-center h-screen gap-x-2">
+    <form id="taskForm" class="bg-zinc-700 p-10 rounded-md max-w-md">
+      <label for="title" class="block">Title</label>
+      <input type="text" class="bg-gray-800 px-1 py-2 w-full rounded-md mb-2" name="title" id="title"
+        placeholder="Write a title">
 
-  <form id="taskForm">
-    <label for="title">Title</label>
-    <input type="text" name="title" id="title" placeholder="Write a title">
+      <label class="block" for="description">Description</label>
+      <textarea class="bg-gray-800 px-1 py-2 w-full rounded-md mb-2" name="description" id="description" cols="30"
+        rows="10" placeholder="Write a description"></textarea>
 
-    <label for="description">Description</label>
-    <textarea name="description" id="description" cols="30" rows="10" placeholder="Write a description"></textarea>
+      <button class="bg-blue-600 px-3 py-1 rounded-md hover:bg-blue-500" type="submit">Save</button>
+    </form>
 
-    <button type="submit">Save</button>
-  </form>
-
-  <div id="taskList">
+    <div id="taskList" class="bg-zinc-700 max-w-md w-full h-3/5 p-10 overflow-y-scroll">
+      taskList
+    </div>
   </div>
 
   <script type="module" src="/src/main.ts"></script>
