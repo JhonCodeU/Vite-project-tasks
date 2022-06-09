@@ -1,9 +1,14 @@
+import { v4 } from 'uuid'
+import Toastify from 'toastify-js'
+
+import "toastify-js/src/toastify.css"
 import './style.css';
 
 const taskForm = document.querySelector<HTMLFormElement>('#taskForm')
 const taskList = document.querySelector<HTMLDivElement>('#taskList')
 
 interface Task {
+  id: string
   title: string;
   description: string;
 }
@@ -17,11 +22,20 @@ taskForm?.addEventListener('submit', e => {
   const description = taskForm['description'] as unknown as HTMLTextAreaElement
 
   tasks.push({
+    id: v4(),
     title: title.value,
     description: description.value
   })
 
   localStorage.setItem('tasks', JSON.stringify(tasks))
+
+  Toastify({
+    text: 'Task added',
+    duration: 3000,
+    style: {
+      background: "linear-gradient(to right, #00b09b, #96c93d)",
+    }
+  }).showToast()
 
   rederTask(tasks)
 
@@ -31,7 +45,6 @@ taskForm?.addEventListener('submit', e => {
 
 document.addEventListener('DOMContentLoaded', () => {
   tasks = JSON.parse(localStorage.getItem('tasks') || '[]')
-  console.log(tasks);
   rederTask(tasks)
 })
 
@@ -52,6 +65,22 @@ function rederTask(tasks: Task[]) {
     const btnDelete = document.createElement('button')
     btnDelete.className = 'bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded-md'
     btnDelete.innerText = 'Delete'
+
+    btnDelete.addEventListener('click', () => {
+      const index = tasks.findIndex(t => t.id === task.id)
+      tasks.splice(index, 1)
+      localStorage.setItem('tasks', JSON.stringify(tasks))
+
+      Toastify({
+        text: 'Task deleted',
+        duration: 3000,
+        style: {
+          background: "linear-gradient(to right,  #C70039 , #FF5733)",
+        }
+      }).showToast()
+
+      rederTask(tasks)
+    })
     
     header.append(title)
     header.append(btnDelete)
@@ -61,6 +90,11 @@ function rederTask(tasks: Task[]) {
     
     taskElement.append(header)
     taskElement.append(description)
+
+    const id = document.createElement('p')
+    id.innerText = task.id
+    id.className = 'text-gray-400 text-xs'
+    taskElement.append(id)
 
     taskList?.append(taskElement)
   })
